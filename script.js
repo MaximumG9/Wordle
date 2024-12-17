@@ -1,0 +1,159 @@
+let wordList = []; 
+let targetWord = ""; 
+let currentRow = 0;
+let guessedWords = []; 
+let score = Number.parseFloat(localStorage.getItem("score"));
+
+if(Number.isNaN(score)) {
+    score = 0;
+}
+updateScore();
+
+
+function updateScore() {
+    document.getElementById("score").textContent = "Score: " + score;
+}
+
+function loadWords() {
+  fetch("words.txt") 
+    .then((response) => response.text())
+    .then((data) => {
+
+      const allWords = data.split("\n");
+      wordList = allWords.filter((word) => word.length === 5);
+      console.log("List of words loaded:", wordList.length, "words");
+
+      setRandomWord();
+    })
+    .catch((error) => console.error("Error with loading words:", error));
+}
+
+function setRandomWord() {
+  if (wordList.length > 0) {
+    const randomIndex = Math.floor(Math.random() * wordList.length);
+    targetWord = wordList[randomIndex].toLowerCase();
+    console.log("The word is:", targetWord);
+  } else {
+    console.error("Word list is empty!");
+  }
+}
+
+// Создание игровой доски
+function createBoard() {
+  for (let i = 1; i <= 6; i++) {
+    const row = document.getElementById(`row${i}`);
+    row.innerHTML = "";
+    for (let j = 1; j <= 5; j++) {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      row.appendChild(cell);
+    }
+  }
+}
+
+// Отправка догадки
+function submitGuess() {
+  const guessInput = document.getElementById("guess-input");
+  const guess = guessInput.value.toLowerCase().trim();
+  guessInput.value = "";
+
+  // Проверка длины слова
+  if (guess.length !== 5) {
+    alert("Enter a word of 5 letters.");
+    return;
+  }
+
+  // Проверка, есть ли слово в списке
+  if (!wordList.includes(guess)) {
+    alert("The word is not in the list.");
+    return;
+  }
+
+  // Обработка догадки
+  if (currentRow < 6) {
+    guessedWords[currentRow] = guess; 
+    displayGuess(guess); 
+    checkGuess(guess); 
+    currentRow++; 
+  }
+
+  // Проверка окончания игры
+  if (currentRow === 6 && guess !== targetWord) {
+    document.getElementById("message").textContent = `The game is over! The word was: ${targetWord.toUpperCase()}`;
+  }
+}
+
+// Отображение догадки на доске
+function displayGuess(guess) {
+  const row = document.getElementById(`row${currentRow + 1}`);
+  for (let i = 0; i < 5; i++) {
+    row.children[i].textContent = guess[i].toUpperCase(); 
+  }
+}
+
+// Проверка догадки и раскраска ячеек
+function checkGuess(guess) {
+  const row = document.getElementById(`row${currentRow + 1}`);
+  const freqList = generateFrequencyList(targetWord);
+  for (let i = 0; i < 5; i++) {
+    row.children[i].style.backgroundColor = "gray"
+    if (guess[i] === targetWord[i] && freqList.get(guess[i]) > 0) {
+      row.children[i].style.backgroundColor = "green"; // Зелёный: правильная буква на правильном месте
+      freqList.set(guess[i],freqList.get(guess[i])-1);
+    }
+  }
+  
+  for (let i = 0; i < 5; i++) {
+    if(targetWord.includes(guess[i]) && freqList.get(guess[i]) > 0) {
+        row.children[i].style.backgroundColor = "yellow"; // Жёлтый: правильная буква, но не на своём месте
+        freqList.set(guess[i],freqList.get(guess[i])-1);
+    }
+  }
+    
+
+  // Если угадали слово
+  if (guess === targetWord) {
+    document.getElementById("message").textContent = "Congratulations, you won!";
+    win();
+    currentRow = 6; // Завершаем игру
+  }
+}
+
+function generateFrequencyList(string) {
+    let frequencies = new Map();
+    for(let i = 0; i < string.length; i++) {
+        if(!frequencies.has(string[i])) {
+            frequencies.set(string[i],0);
+        }
+        frequencies.set(string[i],frequencies.get(string[i])+1);
+        console.log(frequencies);
+    }
+    return frequencies;
+  }
+
+// Начать новую игру
+function startNewGame() {
+  setRandomWord(); // Установить новое загаданное слово
+  currentRow = 0; // Сбросить текущую строку
+  guessedWords = []; // Очистить список догадок
+  createBoard(); // Создать новую доску
+  document.getElementById("message").textContent = ""; // Очистить сообщение
+  document.getElementById("guess-input").value = ""; // Очистить поле ввода
+}
+
+function win() {
+    score++;
+    localStorage.setItem("score",score.toPrecision());
+    updateScore();
+}
+
+// Загрузка слов и инициализация игры
+loadWords();
+createBoard();
+
+
+onkeydown = (event) => {
+    if(event.key == "Enter") {
+        submitGuess();
+    }
+};
