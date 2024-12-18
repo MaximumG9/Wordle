@@ -2,21 +2,23 @@ button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #7CBF50;
-    color: black;
+    background-color: #556B2F; 
+    color: #EAEAEA;
     border: none;
     border-radius: 4px;
     margin: 5px;
 }
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1E1E1E; 
+    color: #EAEAEA; 
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
+
 #shop {
     display: flex;
     flex-direction: column;
@@ -25,4 +27,5 @@ body {
 #score {
     text-align: center;
     font-size: 30px;
+    color: #FFD700; 
 }
