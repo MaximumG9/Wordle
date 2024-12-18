@@ -1,3 +1,13 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1E1E1E; 
+    color: #EAEAEA; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
 button {
     padding: 10px 20px;
     font-size: 16px;
@@ -9,15 +19,7 @@ button {
     margin: 5px;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1E1E1E; 
-    color: #EAEAEA; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-}
+
 
 #shop {
     display: flex;
