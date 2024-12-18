@@ -131,14 +131,16 @@ function generateFrequencyList(string) {
     return frequencies;
   }
 
-// Начать новую игру
+function backToMenu(){
+  window.location.href = "menu.html";
+}
 function startNewGame() {
-  setRandomWord(); // Установить новое загаданное слово
-  currentRow = 0; // Сбросить текущую строку
-  guessedWords = []; // Очистить список догадок
-  createBoard(); // Создать новую доску
-  document.getElementById("message").textContent = ""; // Очистить сообщение
-  document.getElementById("guess-input").value = ""; // Очистить поле ввода
+  setRandomWord(); 
+  currentRow = 0; 
+  guessedWords = []; 
+  createBoard(); 
+  document.getElementById("message").textContent = ""; 
+  document.getElementById("guess-input").value = "";
 }
 
 function win() {
@@ -147,7 +149,7 @@ function win() {
     updateScore();
 }
 
-// Загрузка слов и инициализация игры
+
 loadWords();
 createBoard();
 
