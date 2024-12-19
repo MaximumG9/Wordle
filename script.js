@@ -120,7 +120,7 @@ function checkGuess(guess) {
   }
   
   for (let i = 0; i < 5; i++) {
-    if(targetWord.includes(guess[i]) && freqList.get(guess[i]) > 0) {
+    if(targetWord.includes(guess[i]) && freqList.get(guess[i]) > 0 && targetWord[i] != guess[i]) {
         row.children[i].style.backgroundColor = "#AAAA40"; // Жёлтый: правильная буква, но не на своём месте
         freqList.set(guess[i],freqList.get(guess[i])-1);
     }
