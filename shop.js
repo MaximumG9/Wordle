@@ -39,6 +39,14 @@ function buyTheme(theme,price) {
     }
 }
 
+function buyMultiplier(price) {
+    if(score >= price) {
+        score -= price;
+        updateScore();
+        multiplier *= 1.1;
+    }
+}
+
 function applySavedTheme(){
     const themeLink = document.getElementById("theme-style")
     if (!themeLink) return;

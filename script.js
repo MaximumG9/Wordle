@@ -26,13 +26,16 @@ function loadWords() {
       setRandomWord();
     })
     .catch((error) => console.error("Error with loading answers:", error));
-    fetch("allowed_guesses.txt") 
-      .then((response) => response.text())
-      .then((data) => {
-        const allowedWords = data.split("\n");
-        console.log("List of words loaded:", wordList.length, "words");
-      })
-      .catch((error) => console.error("Error with loading words:", error));
+}
+
+function loadAllowedGuesses() {
+  fetch("allowed_guesses.txt") 
+    .then((response) => response.text())
+    .then((data) => {
+      allowedWords = data.split("\n");
+      console.log("List of words loaded:", allowedWords.length, "words");
+    })
+    .catch((error) => console.error("Error with loading words:", error));
 }
 
 function setRandomWord() {
@@ -162,6 +165,7 @@ function win() {
 
 
 loadWords();
+loadAllowedGuesses();
 createBoard();
 applySavedTheme();
 
