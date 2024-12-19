@@ -4,10 +4,16 @@ let targetWord = "";
 let currentRow = 0;
 let guessedWords = []; 
 let score = Number.parseFloat(localStorage.getItem("score"));
+let multiplier = Number.parseFloat(localStorage.getItem("multiplier"))
 
 if(Number.isNaN(score)) {
     score = 0;
 }
+
+if(Number.isNaN(multiplier)) {
+  multiplier = 1;
+}
+
 updateScore();
 
 
@@ -159,7 +165,7 @@ function applySavedTheme(){
   themeLink.href = savedTheme === `light` ? `style.css` : savedTheme + `-style.css` 
 }
 function win() {
-    score++;
+    score += multiplier;
     updateScore();
 }
 

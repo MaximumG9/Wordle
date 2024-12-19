@@ -43,7 +43,7 @@ function buyMultiplier(price) {
     if(score >= price) {
         score -= price;
         updateScore();
-        multiplier *= 1.1;
+        multiplier += 0.1;
     }
 }
 
@@ -65,14 +65,3 @@ function backToMenu(){
 
 applySavedTheme()
 updateScore()
-// function updateTheme() {
-//     let newStyleSheetRef = theme + "-" + document.getElementById("stylesheet").getAttribute("href");
-//     document.getElementById("stylesheet").setAttribute("href",newStyleSheetRef);
-// }
-
-// document.getElementById("buy-mutliplier").addEventListener((event) => {
-//     if(score > 5) {
-//         score -= 5;
-//         multiplier += 1.1;
-//     }
-// });
