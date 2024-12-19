@@ -99,14 +99,14 @@ function checkGuess(guess) {
   for (let i = 0; i < 5; i++) {
     row.children[i].style.backgroundColor = "gray"
     if (guess[i] === targetWord[i] && freqList.get(guess[i]) > 0) {
-      row.children[i].style.backgroundColor = "green"; // Зелёный: правильная буква на правильном месте
+      row.children[i].style.backgroundColor = "#40AA40"; // Зелёный: правильная буква на правильном месте
       freqList.set(guess[i],freqList.get(guess[i])-1);
     }
   }
   
   for (let i = 0; i < 5; i++) {
     if(targetWord.includes(guess[i]) && freqList.get(guess[i]) > 0) {
-        row.children[i].style.backgroundColor = "yellow"; // Жёлтый: правильная буква, но не на своём месте
+        row.children[i].style.backgroundColor = "#AAAA40"; // Жёлтый: правильная буква, но не на своём месте
         freqList.set(guess[i],freqList.get(guess[i])-1);
     }
   }
