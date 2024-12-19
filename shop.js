@@ -44,6 +44,7 @@ function buyMultiplier(price) {
         score -= price;
         updateScore();
         multiplier += 0.1;
+        updateMultiplier()
     }
 }
 
