@@ -47,6 +47,10 @@ function buyMultiplier(price) {
     }
 }
 
+function updateMultiplier() {
+    localStorage.setItem("multiplier",multiplier.toPrecision());
+}
+
 function applySavedTheme(){
     const themeLink = document.getElementById("theme-style")
     if (!themeLink) return;
