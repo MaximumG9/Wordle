@@ -25,10 +25,17 @@ function changeTheme(newTheme){
     themeLink.href = newTheme === `light` ? `shop-style.css` : newTheme + `-shop-style.css`;
 }
 function buyTheme(theme,price) {
+    const savedTheme = localStorage.getItem(`theme`) || `light`
+    if(theme == savedTheme) {
+        document.getElementById("error-text").innerText = "You are already using that theme"
+        return;
+    }
     if(score >= price) {
         changeTheme(theme);
         score -= price;
         updateScore();
+    } else {
+        document.getElementById("error-text").innerText = "That item is too expensive"
     }
 }
 

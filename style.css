@@ -17,7 +17,7 @@ body {
     grid-template-rows: repeat(6, 50px);
     grid-gap: 10px;
     margin-bottom: 20px;
-    color:#dddddd;
+    color:#ffffff;
   }
   
   .row {
