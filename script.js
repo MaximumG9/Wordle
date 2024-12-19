@@ -1,4 +1,5 @@
 let wordList = []; 
+let allowedWords = [];
 let targetWord = ""; 
 let currentRow = 0;
 let guessedWords = []; 
@@ -19,14 +20,19 @@ function loadWords() {
   fetch("words.txt") 
     .then((response) => response.text())
     .then((data) => {
-
-      const allWords = data.split("\n");
-      wordList = allWords.filter((word) => word.length === 5);
-      console.log("List of words loaded:", wordList.length, "words");
+      wordList = data.split("\n");
+      console.log("List of answers loaded:", wordList.length, "words");
 
       setRandomWord();
     })
-    .catch((error) => console.error("Error with loading words:", error));
+    .catch((error) => console.error("Error with loading answers:", error));
+    fetch("allowed_guesses.txt") 
+      .then((response) => response.text())
+      .then((data) => {
+        const allowedWords = data.split("\n");
+        console.log("List of words loaded:", wordList.length, "words");
+      })
+      .catch((error) => console.error("Error with loading words:", error));
 }
 
 function setRandomWord() {
@@ -65,7 +71,7 @@ function submitGuess() {
   }
 
   // Проверка, есть ли слово в списке
-  if (!wordList.includes(guess)) {
+  if (!(allowedWords.includes(guess) || wordList.includes(guess))) {
     alert("The word is not in the list.");
     return;
   }
