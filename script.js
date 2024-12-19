@@ -1,4 +1,5 @@
 let wordList = []; 
+let allowedWords = [];
 let targetWord = ""; 
 let currentRow = 0;
 let guessedWords = []; 
@@ -11,19 +12,28 @@ updateScore();
 
 
 function updateScore() {
-    document.getElementById("score").textContent = "Score: " + score;
+  localStorage.setItem("score",score.toPrecision());
+  document.getElementById("score").textContent = "Score: " + score;
 }
 
 function loadWords() {
   fetch("words.txt") 
     .then((response) => response.text())
     .then((data) => {
-
-      const allWords = data.split("\n");
-      wordList = allWords.filter((word) => word.length === 5);
-      console.log("List of words loaded:", wordList.length, "words");
+      wordList = data.split("\n");
+      console.log("List of answers loaded:", wordList.length, "words");
 
       setRandomWord();
+    })
+    .catch((error) => console.error("Error with loading answers:", error));
+}
+
+function loadAllowedGuesses() {
+  fetch("allowed_guesses.txt") 
+    .then((response) => response.text())
+    .then((data) => {
+      allowedWords = data.split("\n");
+      console.log("List of words loaded:", allowedWords.length, "words");
     })
     .catch((error) => console.error("Error with loading words:", error));
 }
@@ -64,7 +74,7 @@ function submitGuess() {
   }
 
   // Проверка, есть ли слово в списке
-  if (!wordList.includes(guess)) {
+  if (!(allowedWords.includes(guess) || wordList.includes(guess))) {
     alert("The word is not in the list.");
     return;
   }
@@ -98,14 +108,14 @@ function checkGuess(guess) {
   for (let i = 0; i < 5; i++) {
     row.children[i].style.backgroundColor = "gray"
     if (guess[i] === targetWord[i] && freqList.get(guess[i]) > 0) {
-      row.children[i].style.backgroundColor = "green"; // Зелёный: правильная буква на правильном месте
+      row.children[i].style.backgroundColor = "#40AA40"; // Зелёный: правильная буква на правильном месте
       freqList.set(guess[i],freqList.get(guess[i])-1);
     }
   }
   
   for (let i = 0; i < 5; i++) {
     if(targetWord.includes(guess[i]) && freqList.get(guess[i]) > 0) {
-        row.children[i].style.backgroundColor = "yellow"; // Жёлтый: правильная буква, но не на своём месте
+        row.children[i].style.backgroundColor = "#AAAA40"; // Жёлтый: правильная буква, но не на своём месте
         freqList.set(guess[i],freqList.get(guess[i])-1);
     }
   }
@@ -130,12 +140,6 @@ function generateFrequencyList(string) {
     }
     return frequencies;
   }
-  function changeToDark(){
-    const themeLink = document.getElementById("theme-style");
-    if (!themeLink) return;
-    const currentStyle = themeLink.href.split('/').pop();
-    themeLink.href = currentStyle === `style.css` ? `dark-style.css` : `style.css`
-}
 function backToMenu(){
   window.location.href = "menu.html";
 }
@@ -152,16 +156,16 @@ function applySavedTheme(){
   if (!themeLink) return;
   const savedTheme = localStorage.getItem(`theme`) || `light`
 
-  themeLink.href = savedTheme === `light` ? `style.css` : `dark-style.css` 
+  themeLink.href = savedTheme === `light` ? `style.css` : savedTheme + `-style.css` 
 }
 function win() {
     score++;
-    localStorage.setItem("score",score.toPrecision());
     updateScore();
 }
 
 
 loadWords();
+loadAllowedGuesses();
 createBoard();
 applySavedTheme();
 
