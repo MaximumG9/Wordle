@@ -11,7 +11,8 @@ updateScore();
 
 
 function updateScore() {
-    document.getElementById("score").textContent = "Score: " + score;
+  localStorage.setItem("score",score.toPrecision());
+  document.getElementById("score").textContent = "Score: " + score;
 }
 
 function loadWords() {
@@ -130,12 +131,6 @@ function generateFrequencyList(string) {
     }
     return frequencies;
   }
-  function changeToDark(){
-    const themeLink = document.getElementById("theme-style");
-    if (!themeLink) return;
-    const currentStyle = themeLink.href.split('/').pop();
-    themeLink.href = currentStyle === `style.css` ? `dark-style.css` : `style.css`
-}
 function backToMenu(){
   window.location.href = "menu.html";
 }
@@ -152,11 +147,10 @@ function applySavedTheme(){
   if (!themeLink) return;
   const savedTheme = localStorage.getItem(`theme`) || `light`
 
-  themeLink.href = savedTheme === `light` ? `style.css` : `dark-style.css` 
+  themeLink.href = savedTheme === `light` ? `style.css` : savedTheme + `-style.css` 
 }
 function win() {
     score++;
-    localStorage.setItem("score",score.toPrecision());
     updateScore();
 }
 
